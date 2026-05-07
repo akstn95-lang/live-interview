@@ -1,0 +1,431 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Serif+KR:wght@400;600;700&family=Noto+Sans+KR:wght@300;400;500&display=swap');
+*{box-sizing:border-box;margin:0;padding:0}
+:root{--bg:#faf8f4;--surface:#fff;--surface2:#f4f0e8;--border:#e8e0d0;--accent:#2d5a3d;--accent2:#4a7c5f;--accent3:#c8a96e;--text:#1a1a16;--muted:#7a7468;--danger:#c0392b;--success:#27ae60;--warn:#d68910}
+@media(prefers-color-scheme:dark){:root{--bg:#0e0f0c;--surface:#161810;--surface2:#1e201a;--border:#2a2e24;--accent:#6ab58a;--accent2:#88c9a1;--accent3:#d4a96e;--text:#e8e6e0;--muted:#8a8880}}
+body{background:var(--bg);color:var(--text);font-family:'Noto Sans KR',sans-serif;min-height:100vh;display:flex;flex-direction:column}
+.top-bar{padding:1rem 1.5rem;background:var(--surface);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:8px}
+.brand{display:flex;align-items:center;gap:10px}
+.emblem{width:32px;height:32px;border-radius:6px;background:var(--accent);display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px}
+.bname{font-family:'Noto Serif KR',serif;font-size:1.1rem;font-weight:700}
+.bsub{font-size:10px;color:var(--muted);letter-spacing:1.5px}
+.badge{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);font-size:11px;color:var(--muted)}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0}
+.dot.on{background:var(--success);animation:blink 1.4s infinite}
+.dot.err{background:var(--danger)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.layout{display:grid;grid-template-columns:280px 1fr;flex:1;height:calc(100vh - 65px)}
+.panel{border-right:1px solid var(--border);padding:1.2rem;overflow-y:auto;display:flex;flex-direction:column;gap:1.2rem;background:var(--surface)}
+.stl{font-size:9px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;font-weight:500}
+label{display:block;font-size:11px;color:var(--muted);margin-bottom:4px}
+input[type=password],input[type=text],select{width:100%;padding:8px 10px;background:var(--surface2);border:1px solid var(--border);border-radius:7px;color:var(--text);font-size:12px;font-family:inherit;outline:none;transition:border .2s}
+input:focus,select:focus{border-color:var(--accent)}
+input::placeholder{color:var(--muted);font-size:11px}
+select option{background:var(--surface)}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:5px}
+.tbtn{padding:8px 6px;border-radius:7px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-size:10px;cursor:pointer;text-align:center;transition:all .2s;font-family:inherit;line-height:1.4}
+.tbtn:hover{border-color:var(--accent2);color:var(--accent2)}
+.tbtn.on{border-color:var(--accent);background:rgba(45,90,61,.1);color:var(--accent);font-weight:500}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chip{padding:5px 10px;border-radius:20px;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-size:11px;cursor:pointer;transition:all .2s;font-family:inherit}
+.chip:hover{border-color:var(--accent3);color:var(--accent3)}
+.chip.on{border-color:var(--accent3);background:rgba(200,169,110,.12);color:var(--accent3)}
+.gbtn{width:100%;padding:11px;border-radius:8px;border:none;background:var(--accent);color:#fff;font-size:13px;font-weight:500;cursor:pointer;font-family:'Noto Serif KR',serif;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:7px}
+.gbtn:hover:not(:disabled){background:var(--accent2);transform:translateY(-1px)}
+.gbtn:disabled{background:var(--surface2);color:var(--muted);cursor:not-allowed}
+.ebtn{background:transparent!important;border:1px solid var(--danger)!important;color:var(--danger)!important;font-family:'Noto Sans KR',sans-serif!important}
+.sgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}
+.sc{background:var(--surface2);border:1px solid var(--border);border-radius:7px;padding:8px;text-align:center}
+.sn{font-size:18px;font-weight:700;color:var(--accent);font-family:'Noto Serif KR',serif}
+.sl{font-size:9px;color:var(--muted);margin-top:2px}
+.conv{flex:1;overflow-y:auto;padding:1.5rem;display:flex;flex-direction:column;gap:1.2rem;background:var(--bg)}
+.msg{display:flex;gap:10px;max-width:88%;animation:up .3s ease}
+@keyframes up{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.msg.me{margin-left:auto;flex-direction:row-reverse}
+.av{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0;margin-top:3px}
+.av.ai{background:var(--accent);color:#fff}
+.av.me{background:var(--surface2);border:1px solid var(--border)}
+.mlbl{font-size:9px;color:var(--muted);margin-bottom:3px;letter-spacing:1px;text-transform:uppercase}
+.msg.me .mlbl{text-align:right}
+.bub{padding:11px 14px;border-radius:12px;font-size:13px;line-height:1.8;white-space:pre-wrap}
+.msg.ai .bub{background:var(--surface);border:1px solid var(--border);border-top-left-radius:3px}
+.msg.me .bub{background:rgba(45,90,61,.12);border:1px solid rgba(45,90,61,.2);border-top-right-radius:3px}
+.fbtag{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:20px;font-size:10px;margin-top:5px}
+.fbg{background:rgba(39,174,96,.1);color:var(--success);border:1px solid rgba(39,174,96,.25)}
+.fbw{background:rgba(214,137,16,.1);color:var(--warn);border:1px solid rgba(214,137,16,.25)}
+.fbb{background:rgba(192,57,43,.1);color:var(--danger);border:1px solid rgba(192,57,43,.25)}
+.vrow{padding:1rem 1.5rem;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;background:var(--surface)}
+.wbox{flex:1;height:46px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;overflow:hidden;display:flex;align-items:center;padding:0 12px;position:relative}
+.winner{display:flex;align-items:center;gap:2.5px;height:100%}
+.wb{width:2.5px;border-radius:2px;background:var(--accent);opacity:.35;min-height:3px;transition:height .08s}
+.wb.on{opacity:.9}
+.itxt{position:absolute;font-size:11px;color:var(--muted)}
+.mbtn{width:46px;height:46px;border-radius:50%;border:2px solid var(--border);background:var(--surface);color:var(--muted);font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.mbtn:hover{border-color:var(--accent);color:var(--accent)}
+.mbtn.rec{border-color:var(--danger);color:var(--danger);background:rgba(192,57,43,.08);animation:rp 1s infinite}
+.mbtn:disabled,.xbtn:disabled{opacity:.35;cursor:not-allowed}
+@keyframes rp{0%,100%{box-shadow:0 0 0 0 rgba(192,57,43,.4)}50%{box-shadow:0 0 0 8px rgba(192,57,43,0)}}
+.xbtn{width:46px;height:46px;border-radius:50%;border:1px solid var(--border);background:var(--surface2);color:var(--muted);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0}
+.xbtn:hover{border-color:var(--accent);background:var(--accent);color:#fff}
+.empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;color:var(--muted);text-align:center;padding:2rem}
+.eico{width:60px;height:60px;border-radius:16px;background:var(--surface);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:26px;margin-bottom:6px}
+.empty h3{font-family:'Noto Serif KR',serif;color:var(--text);font-size:17px}
+.empty p{font-size:12px;max-width:280px;line-height:1.7}
+.typing{display:flex;gap:4px;align-items:center;padding:6px 0}
+.td{width:6px;height:6px;border-radius:50%;background:var(--accent);animation:ty 1.4s infinite}
+.td:nth-child(2){animation-delay:.2s}.td:nth-child(3){animation-delay:.4s}
+@keyframes ty{0%,80%,100%{transform:scale(.6);opacity:.4}40%{transform:scale(1);opacity:1}}
+.tlive{margin:0 0 .5rem;padding:5px 12px;background:rgba(45,90,61,.08);border:1px solid rgba(45,90,61,.15);border-radius:6px;font-size:11px;color:var(--accent2);font-style:italic}
+.ibox{padding:9px 12px;background:rgba(200,169,110,.08);border:1px solid rgba(200,169,110,.2);border-radius:7px;font-size:11px;color:var(--accent3);line-height:1.6}
+.ibox a{color:var(--accent3)}
+.warnbox{padding:10px 12px;background:rgba(214,137,16,.08);border:1px solid rgba(214,137,16,.25);border-radius:7px;font-size:11px;color:var(--warn);line-height:1.7;margin-top:6px}
+.errbox{padding:12px 14px;background:rgba(192,57,43,.07);border:1px solid rgba(192,57,43,.2);border-radius:7px;font-size:12px;color:var(--danger);line-height:1.8}
+.mdl-tag{display:inline-flex;align-items:center;gap:4px;padding:3px 8px;border-radius:4px;font-size:10px;background:rgba(45,90,61,.1);color:var(--accent);border:1px solid rgba(45,90,61,.2);margin-left:6px}
+::-webkit-scrollbar{width:3px}::-webkit-scrollbar-thumb{background:var(--border);border-radius:3px}
+</style>
+
+<div class="top-bar">
+  <div class="brand">
+    <div class="emblem">📚</div>
+    <div><div class="bname">대입 심층면접 AI <span class="mdl-tag" id="mdlTag">모델 미확인</span></div><div class="bsub">Gemini API 자동 감지</div></div>
+  </div>
+  <div class="badge"><div class="dot" id="dot"></div><span id="ctxt">연결 안 됨</span></div>
+</div>
+
+<div class="layout">
+  <div class="panel">
+    <div>
+      <div class="stl">API 설정</div>
+      <label>Gemini API Key</label>
+      <input type="password" id="apiKey" placeholder="AIzaSy..." />
+      <div style="margin-top:7px">
+        <div class="ibox">🔑 <a href="https://aistudio.google.com/apikey" target="_blank">Google AI Studio</a>에서 무료 발급<br>
+        ⚠️ <strong>로컬 파일</strong>로 실행 시 CORS 오류 발생 — <a href="https://code.visualstudio.com/" target="_blank">VS Code</a> + Live Server 또는 <a href="https://github.com" target="_blank">GitHub Pages</a> 사용 권장</div>
+      </div>
+    </div>
+    <div>
+      <div class="stl">지원 대학 유형</div>
+      <div class="chips">
+        <button class="chip on" data-u="서울대" onclick="pu(this)">서울대</button>
+        <button class="chip" data-u="연·고대" onclick="pu(this)">연·고대</button>
+        <button class="chip" data-u="의대" onclick="pu(this)">의·치·한의대</button>
+        <button class="chip" data-u="교대" onclick="pu(this)">교대·사대</button>
+        <button class="chip" data-u="이공계" onclick="pu(this)">이공계 특성화</button>
+        <button class="chip" data-u="일반대" onclick="pu(this)">일반대</button>
+      </div>
+    </div>
+    <div>
+      <div class="stl">면접 유형</div>
+      <div class="tgrid">
+        <button class="tbtn on" data-t="종합" onclick="pt(this)">📋 종합 심층</button>
+        <button class="tbtn" data-t="인성" onclick="pt(this)">🤝 인성 면접</button>
+        <button class="tbtn" data-t="제시문" onclick="pt(this)">📄 제시문 기반</button>
+        <button class="tbtn" data-t="전공" onclick="pt(this)">🔬 전공 적합성</button>
+        <button class="tbtn" data-t="MMI" onclick="pt(this)">💬 MMI</button>
+        <button class="tbtn" data-t="영어" onclick="pt(this)">🌐 영어 면접</button>
+      </div>
+    </div>
+    <div>
+      <div class="stl">전공 계열</div>
+      <select id="major">
+        <option value="인문">인문·사회계열</option>
+        <option value="이공">이공·자연계열</option>
+        <option value="의약">의약·보건계열</option>
+        <option value="예체능">예체능계열</option>
+        <option value="교육">교육계열</option>
+        <option value="경영">경상·경영계열</option>
+      </select>
+    </div>
+    <div id="sb" style="display:none">
+      <div class="stl">세션 현황</div>
+      <div class="sgrid">
+        <div class="sc"><div class="sn" id="sQ">0</div><div class="sl">질문</div></div>
+        <div class="sc"><div class="sn" id="sA">0</div><div class="sl">답변</div></div>
+        <div class="sc"><div class="sn" id="sS">-</div><div class="sl">평균점수</div></div>
+      </div>
+    </div>
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:7px">
+      <button class="gbtn" id="goBtn" onclick="toggle()">📚 면접 시작</button>
+      <button class="gbtn ebtn" id="resetBtn" onclick="reset()" style="display:none">🔄 새 세션</button>
+    </div>
+  </div>
+
+  <div style="display:flex;flex-direction:column;height:100%">
+    <div class="conv" id="conv">
+      <div class="empty" id="es">
+        <div class="eico">🎓</div>
+        <h3>대입 심층면접 AI 트레이너</h3>
+        <p>API 키 입력 후 설정을 선택하고<br><strong style="color:var(--accent)">면접 시작</strong>을 눌러주세요.<br><br>
+        <span style="font-size:11px;color:var(--danger)">⚠️ 로컬 파일(file://)에서는 CORS 오류가 납니다.<br>VS Code Live Server 또는 GitHub Pages를 사용하세요.</span></p>
+      </div>
+    </div>
+    <div class="vrow">
+      <button class="mbtn" id="micBtn" onclick="toggleMic()" disabled>🎙️</button>
+      <div class="wbox">
+        <div class="winner" id="wi"></div>
+        <span class="itxt" id="itxt">면접을 시작해주세요</span>
+      </div>
+      <button class="xbtn" id="txtBtn" onclick="ti()" disabled>✏️</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ★ 시도할 모델 목록 (순서대로 fallback)
+const MODELS = [
+  'gemini-2.0-flash',
+  'gemini-1.5-pro',
+  'gemini-1.5-flash',
+  'gemini-pro'
+];
+
+let activeModel = null;
+
+// API 엔드포인트 — v1과 v1beta 모두 시도
+function ep(model, ver='v1') {
+  return `https://generativelanguage.googleapis.com/${ver}/models/${model}:generateContent?key=${gk()}`;
+}
+
+const P = {
+  서울대:{
+    종합:'당신은 서울대학교 입학사정관입니다. 지적 호기심, 학업 역량, 공동체 의식, 자기주도성을 평가하는 심층면접을 진행합니다. 꼬리 질문으로 사고 과정을 파악하고, 매 답변 후 반드시 [점수: X/10] 형식으로 평가하세요. 한국어로 진행합니다.',
+    인성:'당신은 서울대 인성 면접관입니다. 도덕적 판단력, 협동 경험, 갈등 해결 방식을 STAR 기법으로 평가하세요. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',
+    제시문:'당신은 서울대 제시문 면접관입니다. 직접 제시문을 만들어 제시하고, 분석·비교·평가 능력을 측정하세요. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',
+    전공:'당신은 서울대 전공 심층 면접관입니다. 전공 심화 개념과 탐구 활동의 진정성을 평가하세요. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',
+    MMI:'당신은 서울대 MMI 면접관입니다. 짧은 시나리오를 제시하고 판단·소통 능력을 평가하세요. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',
+    영어:'You are a Seoul National University English interview evaluator. Conduct the interview entirely in English. Assess English proficiency, logical reasoning, and academic vocabulary. Include [점수: X/10] after each answer.'
+  },
+  '연·고대':{종합:'당신은 연세대·고려대 학종 심층면접관입니다. 학업 역량, 전공 적합성, 발전 가능성, 인성을 균형 있게 평가합니다. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',인성:'당신은 연·고대 인성 면접관입니다. 리더십, 팀워크, 사회 기여 경험을 평가합니다. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',제시문:'당신은 연·고대 제시문 면접관입니다. 제시문을 직접 만들어 분석 능력을 평가하세요. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',전공:'당신은 연·고대 전공 면접관입니다. 전공 심화 지식과 탐구 역량을 평가합니다. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',MMI:'당신은 연·고대 MMI 면접관입니다. 다양한 시나리오로 판단력을 평가합니다. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',영어:'You are a Yonsei/Korea University English interviewer. Include [점수: X/10] after each answer.'},
+  의대:{종합:'당신은 의대·치대·한의대 입학 면접관입니다. 의료 윤리, 인성, 봉사정신, 공감 능력을 집중 평가합니다. 딜레마 상황을 제시하여 윤리적 사고를 파악하세요. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',인성:'당신은 의대 인성 면접관입니다. 환자 중심 사고, 팀 협력을 평가합니다. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',제시문:'당신은 의대 제시문 면접관입니다. 의료 관련 지문을 만들어 분석하게 하세요. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',전공:'당신은 의대 전공 면접관입니다. 생명과학 심화 개념을 평가합니다. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',MMI:'당신은 의대 MMI 면접관입니다. 의료 윤리 딜레마 시나리오를 진행합니다. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',영어:'You are a medical school English interviewer. Include [점수: X/10] after each answer.'},
+  교대:{종합:'당신은 교대·사대 면접관입니다. 교직 적성, 아동 이해, 교육 철학을 평가합니다. 실제 교실 상황을 제시하세요. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',인성:'당신은 교대 인성 면접관입니다. 교사로서의 인성과 소통 능력을 평가합니다. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',제시문:'당신은 교대 제시문 면접관입니다. 교육 현장 관련 지문을 만들어 분석하게 하세요. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',전공:'당신은 사대 전공 면접관입니다. 교과 심화 지식과 교수 방법론을 평가합니다. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',MMI:'당신은 교대 MMI 면접관입니다. 교실 내 갈등 상황 시나리오를 제시합니다. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',영어:'당신은 교대 영어 면접관입니다. 영어 교수 역량을 평가합니다. 매 답변 후 [점수: X/10] 포함.'},
+  이공계:{종합:'당신은 포항공대·KAIST 입학 면접관입니다. 수학·과학 심화 역량, 연구 잠재력, 창의적 문제 해결 능력을 평가합니다. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',인성:'당신은 이공계 특성화대 인성 면접관입니다. 협업 연구 경험, 도전 정신을 평가합니다. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',제시문:'당신은 이공계 제시문 면접관입니다. 과학·수학 논문 초록을 제시하고 분석하게 하세요. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',전공:'당신은 이공계 전공 면접관입니다. 물리·화학·수학·공학 심화 개념을 묻습니다. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',MMI:'당신은 이공계 MMI 면접관입니다. 실험 설계 시나리오를 제시합니다. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',영어:'You are a POSTECH/KAIST English interviewer. Include [점수: X/10] after each answer.'},
+  일반대:{종합:'당신은 일반 대학교 학종 면접관입니다. 지원 동기, 학업 성취, 진로 계획, 인성을 균형 있게 평가합니다. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',인성:'당신은 일반대 인성 면접관입니다. 협동, 봉사, 책임감을 평가합니다. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',제시문:'당신은 일반대 제시문 면접관입니다. 시사·사회 관련 지문을 만들어 분석 능력을 평가합니다. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',전공:'당신은 일반대 전공 적합성 면접관입니다. 전공 관련 탐구 활동을 평가합니다. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',MMI:'당신은 일반대 MMI 면접관입니다. 사회 상황 시나리오로 판단력을 평가합니다. 매 답변 후 [점수: X/10] 포함. 한국어 진행.',영어:'당신은 일반대 영어 면접관입니다. 학업 목표와 영어 소통 능력을 평가합니다. 매 답변 후 [점수: X/10] 포함.'}
+};
+const MH={인문:'인문·사회 계열, 독서와 사회 현상에 관심 많음.',이공:'이공·자연 계열, 수학·과학 탐구 활동 경험 있음.',의약:'의약·보건 계열, 생명과학 및 의료 봉사 경험 있음.',예체능:'예체능 계열, 실기 및 창작 활동 경험 있음.',교육:'교육 계열, 멘토링·교육 봉사 경험 있음.',경영:'경상·경영 계열, 경제·경영 탐구 및 창업 관심 있음.'};
+
+let sU='서울대',sT='종합',conn=false,rec=false,recog=null,wAF=null;
+let hist=[],qN=0,aN=0,scSum=0,scN=0;
+
+function pu(b){document.querySelectorAll('.chip').forEach(x=>x.classList.remove('on'));b.classList.add('on');sU=b.dataset.u;}
+function pt(b){document.querySelectorAll('.tbtn').forEach(x=>x.classList.remove('on'));b.classList.add('on');sT=b.dataset.t;}
+function gk(){return document.getElementById('apiKey').value.trim();}
+function setC(s,t){document.getElementById('dot').className='dot'+(s?' '+s:'');document.getElementById('ctxt').textContent=t;}
+
+// ★ 핵심: 모델을 순서대로 시도하여 작동하는 것 자동 선택
+async function detectModel() {
+  const key = gk();
+  const testBody = JSON.stringify({
+    contents:[{role:'user',parts:[{text:'안녕'}]}],
+    generationConfig:{maxOutputTokens:10}
+  });
+  for(const ver of ['v1','v1beta']) {
+    for(const mdl of MODELS) {
+      try {
+        const res = await fetch(`https://generativelanguage.googleapis.com/${ver}/models/${mdl}:generateContent?key=${key}`,{
+          method:'POST', headers:{'Content-Type':'application/json'}, body:testBody
+        });
+        if(res.ok) {
+          activeModel = {model:mdl, ver};
+          document.getElementById('mdlTag').textContent = mdl;
+          return true;
+        }
+      } catch(e){}
+    }
+  }
+  return false;
+}
+
+async function callAPI(contents) {
+  if(!activeModel) throw new Error('사용 가능한 모델이 없습니다.');
+  const res = await fetch(`https://generativelanguage.googleapis.com/${activeModel.ver}/models/${activeModel.model}:generateContent?key=${gk()}`,{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({contents, generationConfig:{temperature:0.85,maxOutputTokens:1200}})
+  });
+  if(!res.ok){const er=await res.json();throw new Error(er.error?.message||'API 오류');}
+  const d=await res.json();
+  return d.candidates?.[0]?.content?.parts?.[0]?.text||'';
+}
+
+function buildFirst(){
+  const role=P[sU]?.[sT]||P['일반대']['종합'];
+  const major=document.getElementById('major').value;
+  return `[역할]\n${role}\n[지원자 정보] ${MH[major]}\n\n지금 바로 면접을 시작해주세요. 첫 인사와 함께 첫 번째 질문을 해주세요.`;
+}
+
+async function toggle(){if(!conn)await start();else end();}
+
+async function start(){
+  if(!gk()){alert('Gemini API 키를 입력해주세요.');return;}
+
+  // CORS 경고
+  if(location.protocol==='file:'){
+    const ok=confirm('⚠️ 로컬 파일(file://)에서 실행 중입니다.\n\nCORS 오류로 API 호출이 차단될 수 있습니다.\n\nVS Code Live Server 또는 GitHub Pages 사용을 권장합니다.\n\n그래도 계속하시겠습니까?');
+    if(!ok)return;
+  }
+
+  const cv=document.getElementById('conv');
+  cv.innerHTML='<div class="empty" id="es"><div class="eico">🔍</div><h3>사용 가능한 모델 확인 중...</h3><p>잠시만 기다려주세요.</p></div>';
+  setC('','확인 중...');
+  document.getElementById('goBtn').disabled=true;
+  hist=[];qN=0;aN=0;scSum=0;scN=0;upd();
+
+  const found = await detectModel();
+  if(!found){
+    showErr('사용 가능한 Gemini 모델을 찾지 못했습니다.\n\n가능한 원인:\n• API 키가 올바르지 않음\n• 로컬 파일(file://) 실행으로 인한 CORS 차단\n• 해당 지역에서 Gemini API 미지원\n\n→ VS Code Live Server 또는 GitHub Pages에서 실행해주세요.');
+    return;
+  }
+
+  cv.innerHTML='<div class="empty" id="es"><div class="eico">⏳</div><h3>면접관 입장 중...</h3><p>모델: '+activeModel.model+'</p></div>';
+  addTyping();
+  try{
+    const first=buildFirst();
+    const init=[{role:'user',parts:[{text:first}]}];
+    const reply=await callAPI(init);
+    rmTyping();
+    hist=[{role:'user',parts:[{text:first}]},{role:'model',parts:[{text:reply}]}];
+    aiMsg(reply);
+    onConn();
+  }catch(e){rmTyping();showErr(e.message);}
+}
+
+function onConn(){
+  conn=true;setC('on','연결됨 ('+activeModel.model+')');
+  const gb=document.getElementById('goBtn');
+  gb.disabled=false;gb.innerHTML='⏹️ 면접 종료';gb.classList.add('ebtn');
+  document.getElementById('resetBtn').style.display='flex';
+  document.getElementById('micBtn').disabled=false;
+  document.getElementById('txtBtn').disabled=false;
+  document.getElementById('sb').style.display='block';
+  setupSpeech();
+  document.getElementById('itxt').textContent='🎙️ 마이크 버튼을 눌러 답변하세요';
+}
+
+function setupSpeech(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+  if(!SR){document.getElementById('itxt').textContent='음성인식 미지원 — ✏️ 버튼으로 입력';return;}
+  recog=new SR();recog.lang='ko-KR';recog.continuous=false;recog.interimResults=true;
+  recog.onresult=(e)=>{
+    let f='',im='';
+    for(let i=e.resultIndex;i<e.results.length;i++){if(e.results[i].isFinal)f+=e.results[i][0].transcript;else im+=e.results[i][0].transcript;}
+    showT(f||im,!!f);
+    if(f){stopRec();sendAns(f.trim());}
+  };
+  recog.onerror=(e)=>{if(e.error!=='no-speech')document.getElementById('itxt').textContent='오류:'+e.error;stopRec();};
+  recog.onend=()=>{if(rec)stopRec();};
+}
+
+function showT(t,fin){
+  let el=document.getElementById('tel');
+  if(!el){el=document.createElement('div');el.id='tel';el.className='tlive';document.getElementById('conv').appendChild(el);}
+  el.textContent=(fin?'✅ ':'🎙️ ')+t;
+  if(fin)setTimeout(()=>{if(el)el.remove();},2000);
+}
+
+function addMsg(role,txt,score){
+  const es=document.getElementById('es');if(es)es.remove();
+  const cv=document.getElementById('conv');
+  const w=document.createElement('div');w.className='msg '+role;
+  const av=document.createElement('div');av.className='av '+role;av.textContent=role==='ai'?'🎓':'👤';
+  const wr=document.createElement('div');wr.style.flex='1';
+  const lb=document.createElement('div');lb.className='mlbl';lb.textContent=role==='ai'?'AI 면접관':'응시자';
+  if(role==='me')lb.style.textAlign='right';
+  const bub=document.createElement('div');bub.className='bub';bub.textContent=txt;
+  wr.appendChild(lb);wr.appendChild(bub);
+  if(score!=null){
+    const fb=document.createElement('div');
+    fb.className='fbtag '+(score>=8?'fbg':score>=5?'fbw':'fbb');
+    fb.textContent=(score>=8?'✅':score>=5?'💡':'⚠️')+' '+score+'/10점';
+    wr.appendChild(fb);
+    scSum+=score;scN++;aN++;
+    document.getElementById('sA').textContent=aN;
+    document.getElementById('sS').textContent=(scSum/scN).toFixed(1);
+  }
+  w.appendChild(av);w.appendChild(wr);cv.appendChild(w);cv.scrollTop=cv.scrollHeight;
+}
+function aiMsg(txt){
+  const m=txt.match(/\[?점수[:：\s]*(\d+)/);
+  addMsg('ai',txt,m?parseInt(m[1]):null);
+  qN++;document.getElementById('sQ').textContent=qN;
+}
+function addTyping(){
+  const es=document.getElementById('es');if(es)es.remove();
+  const cv=document.getElementById('conv');
+  const w=document.createElement('div');w.className='msg ai';w.id='tel2';
+  const av=document.createElement('div');av.className='av ai';av.textContent='🎓';
+  const b=document.createElement('div');b.className='bub';
+  b.innerHTML='<div class="typing"><div class="td"></div><div class="td"></div><div class="td"></div></div>';
+  w.appendChild(av);w.appendChild(b);cv.appendChild(w);cv.scrollTop=cv.scrollHeight;
+}
+function rmTyping(){const el=document.getElementById('tel2');if(el)el.remove();}
+function upd(){document.getElementById('sQ').textContent=qN;document.getElementById('sA').textContent=aN;document.getElementById('sS').textContent=scN?((scSum/scN).toFixed(1)):'-';}
+
+async function sendAns(txt){
+  if(!txt||!conn)return;
+  addMsg('me',txt,null);
+  hist.push({role:'user',parts:[{text:txt}]});
+  const withInstr=[...hist.slice(0,-1),{role:'user',parts:[{text:txt+'\n\n[지시] 위 답변을 평가하고 반드시 [점수: X/10] 형식으로 점수를 매긴 뒤, 피드백과 함께 다음 심층 면접 질문을 이어가세요.'}]}];
+  addTyping();
+  try{
+    const reply=await callAPI(withInstr);
+    rmTyping();
+    hist.push({role:'model',parts:[{text:reply}]});
+    aiMsg(reply);
+  }catch(e){rmTyping();addMsg('ai','오류: '+e.message,null);}
+}
+
+function toggleMic(){if(!conn)return;if(rec)stopRec();else startRec();}
+function startRec(){
+  if(!recog){alert('음성인식 미지원\n✏️ 버튼으로 입력해주세요.');return;}
+  rec=true;
+  document.getElementById('micBtn').classList.add('rec');
+  document.getElementById('itxt').style.display='none';
+  document.querySelectorAll('.wb').forEach(b=>b.classList.add('on'));
+  recog.start();
+  (function a(){wAF=requestAnimationFrame(a);document.querySelectorAll('.wb').forEach(b=>{b.style.height=(rec?3+Math.random()*28:3)+'px';});})();
+}
+function stopRec(){
+  rec=false;
+  document.getElementById('micBtn').classList.remove('rec');
+  if(wAF){cancelAnimationFrame(wAF);wAF=null;}
+  document.getElementById('itxt').style.display='';
+  document.querySelectorAll('.wb').forEach(b=>{b.classList.remove('on');b.style.height='3px';});
+  if(recog){try{recog.stop();}catch(e){}}
+}
+function ti(){const t=prompt('답변을 입력하세요:');if(t?.trim())sendAns(t.trim());}
+
+function showErr(msg){
+  const cv=document.getElementById('conv');cv.innerHTML='';
+  const d=document.createElement('div');d.style.padding='2rem';
+  d.innerHTML=`<div class="errbox">❌ ${msg.replace(/\n/g,'<br>')}</div>
+  <div class="warnbox" style="margin-top:12px">
+    💡 <strong>로컬 파일 CORS 해결 방법</strong><br>
+    1. <a href="https://code.visualstudio.com/" style="color:var(--warn)">VS Code</a> 설치 → Live Server 확장 → Go Live 클릭<br>
+    2. <a href="https://github.com" style="color:var(--warn)">GitHub Pages</a>에 index.html로 업로드<br>
+    3. 크롬 실행 시 <code style="background:rgba(0,0,0,.1);padding:1px 4px;border-radius:3px">--disable-web-security</code> 플래그 사용 (비권장)
+  </div>`;
+  cv.appendChild(d);
+  setC('err','연결 실패');
+  const gb=document.getElementById('goBtn');gb.disabled=false;gb.innerHTML='📚 면접 시작';gb.classList.remove('ebtn');
+}
+
+function end(){
+  conn=false;stopRec();setC('','연결 안 됨');
+  const gb=document.getElementById('goBtn');gb.disabled=false;gb.innerHTML='📚 면접 시작';gb.classList.remove('ebtn');
+  document.getElementById('micBtn').disabled=true;document.getElementById('txtBtn').disabled=true;
+  if(aN>0)addMsg('ai','면접이 종료되었습니다. 수고하셨습니다! 🎓\n\n📊 최종 결과\n• 총 답변: '+aN+'개\n• 평균 점수: '+(scSum/scN).toFixed(1)+'/10점',null);
+}
+
+function reset(){
+  end();
+  document.getElementById('conv').innerHTML='<div class="empty" id="es"><div class="eico">🎓</div><h3>대입 심층면접 AI 트레이너</h3><p><strong style="color:var(--accent)">면접 시작</strong>을 눌러 새 세션을 시작하세요.</p></div>';
+  hist=[];qN=0;aN=0;scSum=0;scN=0;upd();
+  document.getElementById('resetBtn').style.display='none';
+  document.getElementById('sb').style.display='none';
+  document.getElementById('itxt').textContent='면접을 시작해주세요';
+  activeModel=null;
+  document.getElementById('mdlTag').textContent='모델 미확인';
+}
+(function(){const wi=document.getElementById('wi');for(let i=0;i<36;i++){const b=document.createElement('div');b.className='wb';b.style.height='3px';wi.appendChild(b);}})();
+</script>
